@@ -18,7 +18,7 @@ export const loadUser = () => async (dispatch) => {
 		setAuthToken(localStorage.token);
 	} 
 	try {
-		const res = await axios.get('https://developers-connector-backend.onrender.com/auth');
+		const res = await axios.get('https://developers-connector-backend.onrender.com/api/auth');
 		console.log(res.data);
 		dispatch({
 			type: USER_LOADED,
@@ -47,7 +47,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
 	}
 
 	try {
-		const res = await axios.post('https://developers-connector-backend.onrender.com/users', { name, email, password }, config);
+		const res = await axios.post('https://developers-connector-backend.onrender.com/api/users', { name, email, password }, config);
 
 		dispatch({
 			type: REGISTER_SUCCESS,
@@ -80,7 +80,7 @@ export const login = (email, password) => async (dispatch) => {
 
 
 	try {
-		const res = await axios.post('https://developers-connector-backend.onrender.com/auth', body, config);
+		const res = await axios.post('https://developers-connector-backend.onrender.com/api/auth', body, config);
 		dispatch({
 			type: LOGIN_SUCCESS,
 			payload: res.data
