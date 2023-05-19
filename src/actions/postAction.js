@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { setAlert } from './alertAction';
 import {
 	GET_POSTS,
@@ -9,12 +10,11 @@ import {
 	ADD_COMMENT,
 	REMOVE_COMMENT
 } from './constants';
-import api from '../utils/api';
 
 // Get posts
 export const getPosts = () => async (dispatch) => {
 	try {
-		const res = await api.get('/posts');
+		const res = await axios.get('https://developers-connector-backend.onrender.com/posts');
 
 		dispatch({
 			type: GET_POSTS,
@@ -31,7 +31,7 @@ export const getPosts = () => async (dispatch) => {
 // Add like
 export const addLike = (id) => async (dispatch) => {
 	try {
-		const res = await api.put(`/posts/like/${id}`);
+		const res = await axios.put(`https://developers-connector-backend.onrender.com/posts/like/${id}`);
 
 		dispatch({
 			type: UPDATE_LIKES,
@@ -48,7 +48,7 @@ export const addLike = (id) => async (dispatch) => {
 // Remove like
 export const removeLike = (id) => async (dispatch) => {
 	try {
-		const res = await api.put(`/posts/unlike/${id}`);
+		const res = await axios.put(`https://developers-connector-backend.onrender.com/posts/unlike/${id}`);
 
 		dispatch({
 			type: UPDATE_LIKES,
@@ -65,7 +65,7 @@ export const removeLike = (id) => async (dispatch) => {
 // Delete post
 export const deletePost = (id) => async (dispatch) => {
 	try {
-		await api.delete(`/posts/${id}`);
+		await axios.delete(`https://developers-connector-backend.onrender.com/posts/${id}`);
 
 		dispatch({
 			type: DELETE_POST,
@@ -90,7 +90,7 @@ export const addPost = (formData) => async (dispatch) => {
 	};
 
 	try {
-		const res = await api.post('/posts', formData, config);
+		const res = await axios.post('https://developers-connector-backend.onrender.com/posts', formData, config);
 
 		dispatch({
 			type: ADD_POST,
@@ -109,7 +109,7 @@ export const addPost = (formData) => async (dispatch) => {
 // Get post
 export const getPost = (id) => async (dispatch) => {
 	try {
-		const res = await api.get(`/posts/${id}`);
+		const res = await axios.get(`https://developers-connector-backend.onrender.com/posts/${id}`);
 
 		dispatch({
 			type: GET_POST,
@@ -132,7 +132,7 @@ export const addComment = (postId, formData) => async (dispatch) => {
 	};
 
 	try {
-		const res = await api.post(`/posts/comment/${postId}`, formData, config);
+		const res = await axios.post(`https://developers-connector-backend.onrender.com/posts/comment/${postId}`, formData, config);
 
 		dispatch({
 			type: ADD_COMMENT,
@@ -151,7 +151,7 @@ export const addComment = (postId, formData) => async (dispatch) => {
 // Delete comment
 export const deleteComment = (postId, commentId) => async (dispatch) => {
 	try {
-		await api.delete(`/posts/comment/${postId}/${commentId}`);
+		await axios.delete(`https://developers-connector-backend.onrender.com/posts/comment/${postId}/${commentId}`);
 
 		dispatch({
 			type: REMOVE_COMMENT,

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { setAlert } from './alertAction';
 
 import {
@@ -10,12 +11,11 @@ import {
 	GET_REPOS,
 	NO_REPOS
 } from './constants';
-import api from '../utils/api';
 
 // Get current users profile
 export const getCurrentProfile = () => async (dispatch) => {
 	try {
-		const res = await api.get('/profile/me');
+		const res = await axios.get('https://developers-connector-backend.onrender.com/profile/me');
 
 		dispatch({
 			type: GET_PROFILE,
@@ -35,7 +35,7 @@ export const getProfiles = () => async (dispatch) => {
 	dispatch({ type: CLEAR_PROFILE });
 
 	try {
-		const res = await api.get('/profile');
+		const res = await axios.get('https://developers-connector-backend.onrender.com/profile');
 
 		dispatch({
 			type: GET_PROFILES,
@@ -52,7 +52,7 @@ export const getProfiles = () => async (dispatch) => {
 // Get profile by ID
 export const getProfileById = (userId) => async (dispatch) => {
 	try {
-		const res = await api.get(`/profile/user/${userId}`);
+		const res = await axios.get(`/profile/user/${userId}`);
 
 		dispatch({
 			type: GET_PROFILE,
@@ -69,7 +69,7 @@ export const getProfileById = (userId) => async (dispatch) => {
 // Get Github repos
 export const getGithubRepos = (username) => async (dispatch) => {
 	try {
-		const res = await api.get(`/profile/github/${username}`);
+		const res = await axios.get(`/profile/github/${username}`);
 
 		dispatch({
 			type: GET_REPOS,
@@ -85,7 +85,7 @@ export const getGithubRepos = (username) => async (dispatch) => {
 // Create or update profile
 export const createProfile = (formData, history, edit = false) => async (dispatch) => {
 	try {
-		const res = await api.post('/profile', formData);
+		const res = await axios.post('https://developers-connector-backend.onrender.com/profile', formData);
 
 		dispatch({
 			type: GET_PROFILE,
@@ -95,7 +95,7 @@ export const createProfile = (formData, history, edit = false) => async (dispatc
 		dispatch(setAlert(edit ? 'Profile Updated' : 'Profile Created', 'success'));
 
 		if (!edit) {
-			history.push('/dashboard');
+			history.push('https://developers-connector-backend.onrender.com/dashboard');
 		}
 	} catch (err) {
 		const errors = err.response.data.errors;
@@ -114,7 +114,7 @@ export const createProfile = (formData, history, edit = false) => async (dispatc
 // Add Experience
 export const addExperience = (formData, history) => async (dispatch) => {
 	try {
-		const res = await api.put('/profile/experience', formData);
+		const res = await axios.put('https://developers-connector-backend.onrender.com/profile/experience', formData);
 
 		dispatch({
 			type: UPDATE_PROFILE,
@@ -123,7 +123,7 @@ export const addExperience = (formData, history) => async (dispatch) => {
 
 		dispatch(setAlert('Experience details added successfully', 'success'));
 
-		history.push('/dashboard');
+		history.push('https://developers-connector-backend.onrender.com/dashboard');
 	} catch (err) {
 		const errors = err.response.data.errors;
 
@@ -141,7 +141,7 @@ export const addExperience = (formData, history) => async (dispatch) => {
 // Add Education
 export const addEducation = (formData, history) => async (dispatch) => {
 	try {
-		const res = await api.put('/profile/education', formData);
+		const res = await axios.put('https://developers-connector-backend.onrender.com/profile/education', formData);
 
 		dispatch({
 			type: UPDATE_PROFILE,
@@ -150,7 +150,7 @@ export const addEducation = (formData, history) => async (dispatch) => {
 
 		dispatch(setAlert('Education details added successfully', 'success'));
 
-		history.push('/dashboard');
+		history.push('https://developers-connector-backend.onrender.com/dashboard');
 	} catch (err) {
 		const errors = err.response.data.errors;
 
@@ -169,7 +169,7 @@ export const addEducation = (formData, history) => async (dispatch) => {
 
 export const deleteExperience = (id) => async (dispatch) => {
 	try {
-		const res = await api.delete(`/profile/experience/${id}`);
+		const res = await axios.delete(`/profile/experience/${id}`);
 
 		dispatch({
 			type: UPDATE_PROFILE,
@@ -188,7 +188,7 @@ export const deleteExperience = (id) => async (dispatch) => {
 
 export const deleteEducation = (id) => async (dispatch) => {
 	try {
-		const res = await api.delete(`/profile/education/${id}`);
+		const res = await axios.delete(`/profile/education/${id}`);
 
 		dispatch({
 			type: UPDATE_PROFILE,
@@ -207,7 +207,7 @@ export const deleteEducation = (id) => async (dispatch) => {
 export const deleteAccount = () => async (dispatch) => {
 	if (window.confirm('Are you sure? This CANNOT be undone!')) {
 		try {
-			await api.delete('/profile');
+			await axios.delete('https://developers-connector-backend.onrender.com/profile');
 
 			dispatch({ type: CLEAR_PROFILE });
 			dispatch({ type: ACCOUNT_DELETED });
