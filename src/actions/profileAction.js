@@ -83,7 +83,7 @@ export const getGithubRepos = (username) => async (dispatch) => {
 };
 
 // Create or update profile
-export const createProfile = (formData, history, edit = false) => async (dispatch) => {
+export const createProfile = (formData, history, edit, remainUsers, userId) => async (dispatch) => {
 	try {
 		const res = await axios.post('https://developers-connector-backend.onrender.com/api/profile', formData);
 
@@ -96,6 +96,18 @@ export const createProfile = (formData, history, edit = false) => async (dispatc
 
 		if (!edit) {
 			history.push('/dashboard');
+
+			remainUsers.forEach(async (otherUser) => {
+
+				const conversation = {
+					senderId: userId,
+					receiverId: otherUser._id
+				}
+
+				await axios.post("https://developers-connector-backend.onrender.com/api/conversations", conversation);
+
+			});
+
 		}
 	} catch (err) {
 		const errors = err.response.data.errors;

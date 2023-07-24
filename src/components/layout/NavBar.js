@@ -1,12 +1,13 @@
 import React, { Fragment } from 'react';
-import { Navbar, Nav, Image} from 'react-bootstrap';
-import {Link } from 'react-router-dom';
+import { Navbar, Nav, Image } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import logo from '../../images/Logo.svg';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/authActions';
 
 const NavBar = ({ authReducer: { isAuthenticated, loading, user }, logout }) => {
+
 	const authLinks = (
 		<Navbar.Collapse id='responsive-navbar-nav'>
 			<Nav className='nav   justify-content-end'>
@@ -15,6 +16,9 @@ const NavBar = ({ authReducer: { isAuthenticated, loading, user }, logout }) => 
 				</Nav.Link>
 				<Nav.Link as={Link} to='/posts'>
 					<i className='fas fa-images' />&nbsp;Posts
+				</Nav.Link>
+				<Nav.Link as={Link} to='/messenger'>
+					<i className='fas fa-comment-dots' />&nbsp;Chat
 				</Nav.Link>
 				<Nav.Link as={Link} to='/dashboard'>
 					<i className='fas fa-user' />&nbsp;{user && user.name}
@@ -45,7 +49,7 @@ const NavBar = ({ authReducer: { isAuthenticated, loading, user }, logout }) => 
 			</Navbar.Brand>
 			<Navbar.Toggle aria-controls='responsive-navbar-nav' />
 
-			{!loading && <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>}
+			{ !loading && <Fragment>{isAuthenticated ? authLinks : guestLinks }</Fragment>}
 		</Navbar>
 	);
 };

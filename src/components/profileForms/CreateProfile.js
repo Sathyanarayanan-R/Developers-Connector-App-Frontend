@@ -1,8 +1,8 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createProfile } from '../../actions/profileAction';
+import { createProfile, getProfiles } from '../../actions/profileAction';
 import { Form, Col, Container, InputGroup, Button } from 'react-bootstrap';
 
 const initialState = {
@@ -20,8 +20,8 @@ const initialState = {
 	instagram: ''
 };
 
-const CreateProfile = ({ createProfile, history }) => {
-	const [ formData, setFormData ] = useState(initialState);
+const CreateProfile = ({ createProfile, history, auth: { user }, getProfiles, profile: { profiles, loading } }) => {
+	const [formData, setFormData] = useState(initialState);
 
 	const {
 		company,
@@ -38,11 +38,24 @@ const CreateProfile = ({ createProfile, history }) => {
 		instagram
 	} = formData;
 
+	useEffect(
+		() => {
+			getProfiles();
+		},
+		[getProfiles]
+	);
+
+	const users = profiles.map((profile) => {
+		return profile.user;
+	});
+
+	const remainUsers = users.filter((u) => u._id !== user?._id);
+
 	const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		createProfile(formData, history);
+		createProfile(formData, history, false, remainUsers, user?._id);
 	};
 
 	return (
@@ -215,7 +228,15 @@ const CreateProfile = ({ createProfile, history }) => {
 };
 
 CreateProfile.propTypes = {
-	createProfile: PropTypes.func.isRequired
+	createProfile: PropTypes.func.isRequired,
+	auth: PropTypes.object.isRequired,
+	getProfiles: PropTypes.func.isRequired,
+	profile: PropTypes.object.isRequired
 };
 
-export default connect(null, { createProfile })(withRouter(CreateProfile));
+const mapStateToProps = (state) => ({
+	auth: state.authReducer,
+	profile: state.profileReducer
+});
+
+export default connect(mapStateToProps, { getProfiles, createProfile })(withRouter(CreateProfile));

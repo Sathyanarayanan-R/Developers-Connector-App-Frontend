@@ -11,12 +11,14 @@ import Profiles from '../profiles/Profiles';
 import Profile from '../profile/Profile';
 import Posts from '../posts/Posts';
 import Post from '../post/Post';
+import Messenger from '../messenger/Messenger';
 import NotFound from '../layout/FourNotFour';
 import AlertCard from '../layout/Alert';
 import { Col } from 'react-bootstrap';
 import PrivateRoute from './PrivateRoute';
 
 const Routes = () => {
+
 	return (
 		<section className='container'>
 			<Col className='text-center d-flex justify-content-around'>
@@ -34,6 +36,7 @@ const Routes = () => {
 				<PrivateRoute exact path='/addEducation' component={AddEducation} />
 				<PrivateRoute exact path='/posts' component={Posts} />
 				<PrivateRoute exact path='/posts/:id' component={Post} />
+				<PrivateRoute exact path='/messenger' component={Messenger} validation = {true} />
 				<Route component={NotFound} />
 			</Switch>
 		</section>
