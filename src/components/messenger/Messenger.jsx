@@ -34,14 +34,19 @@ function Messenger({ auth: { user }, getProfiles, profile: { profiles, loading }
   }, [user?._id]);
 
   useEffect(() => {
-      socket.current = io("ws://developers-connector-socket-io.onrender.com");
-      socket.current.on("getMessage", (data) => {
-        setArrivalMessage({
-          sender: data.senderId,
-          text: data.text,
-          createdAt: Date.now(),
-        });
+
+    const sectionContainerEle = document.getElementById('sectionContainer');
+    sectionContainerEle.style.margin = 0;
+    sectionContainerEle.style.padding = '5px';
+
+    socket.current = io("ws://developers-connector-socket-io.onrender.com");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
       });
+    });
   }, []);
 
   useEffect(() => {
@@ -52,7 +57,7 @@ function Messenger({ auth: { user }, getProfiles, profile: { profiles, loading }
 
   useEffect(
     () => {
-        getProfiles();
+      getProfiles();
     },
     [getProfiles]
   );
@@ -64,12 +69,12 @@ function Messenger({ auth: { user }, getProfiles, profile: { profiles, loading }
   const remainUsers = users.filter((u) => u._id !== user?._id);
 
   useEffect(() => {
-      socket.current.emit("addUser", user?._id);
-      socket.current.on("getUsers", (users) => {
-        setOnlineUsers(
-          remainUsers.filter((f) => users.some((u) => u.userId === f._id))
-        );
-      });
+    socket.current.emit("addUser", user?._id);
+    socket.current.on("getUsers", (users) => {
+      setOnlineUsers(
+        remainUsers.filter((f) => users.some((u) => u.userId === f._id))
+      );
+    });
   }, [user]);
 
   useEffect(() => {
@@ -81,7 +86,7 @@ function Messenger({ auth: { user }, getProfiles, profile: { profiles, loading }
         console.log(err);
       }
     };
-      getMessages();
+    getMessages();
   }, [currentChat]);
 
   const handleSubmit = async (e) => {
@@ -115,6 +120,22 @@ function Messenger({ auth: { user }, getProfiles, profile: { profiles, loading }
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+
+
+  const handleSubmitConversation = (c) => {
+
+    const conversationElements = document.getElementsByClassName('conversation');
+
+    for (let j = 0; j < conversationElements.length; j++) {
+      if (conversationElements[j].id !== c._id)
+        conversationElements[j].style.backgroundColor = 'inherit';
+      else
+        conversationElements[j].style.backgroundColor = 'rgb(245, 243, 243)';
+    }
+
+    setCurrentChat(c);
+  }
+
   return (
     <>
       {conversations.length > 0 ?
@@ -123,9 +144,8 @@ function Messenger({ auth: { user }, getProfiles, profile: { profiles, loading }
             <div className="chatMenuWrapper">
               <input placeholder="Search for friends" className="chatMenuInput" />
               {conversations.map((c) => (
-                <div onClick={() => setCurrentChat(c)}>
+                <div onClick={() => handleSubmitConversation(c)}>
                   <Conversation conversation={c} currentUser={user} otherUsers={remainUsers} />
-
                 </div>
               ))}
             </div>
@@ -137,7 +157,7 @@ function Messenger({ auth: { user }, getProfiles, profile: { profiles, loading }
                   <div className="chatBoxTop">
                     {messages.map((m) => (
                       <div ref={scrollRef}>
-                        <Message message={m} own={m.sender === user?._id} />
+                        <Message message={m} own={m.sender === user?._id} currentUser={user} otherUsers={remainUsers} />
                       </div>
                     ))}
                   </div>

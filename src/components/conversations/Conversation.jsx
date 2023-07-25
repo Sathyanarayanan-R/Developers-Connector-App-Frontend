@@ -19,7 +19,7 @@ export default function Conversation({ conversation, currentUser, otherUsers }) 
   }, [currentUser, otherUsers, conversation]);
 
   return (
-    <div className="conversation">
+    <div className="conversation" id={conversation._id}>
       <img
         className="conversationImg"
         src={user?.avatar}

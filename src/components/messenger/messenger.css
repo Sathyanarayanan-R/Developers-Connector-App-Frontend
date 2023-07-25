@@ -1,5 +1,6 @@
 .messenger {
-  height: calc(100vh - 70px);
+  height: calc(100vh - 86px);
+  width: calc(100vw - 10px);
   display: flex;
 }
 

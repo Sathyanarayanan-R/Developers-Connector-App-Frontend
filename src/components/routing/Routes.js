@@ -20,7 +20,7 @@ import PrivateRoute from './PrivateRoute';
 const Routes = () => {
 
 	return (
-		<section className='container'>
+		<section className='container' id='sectionContainer'>
 			<Col className='text-center d-flex justify-content-around'>
 				<AlertCard />
 			</Col>
