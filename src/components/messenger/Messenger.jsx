@@ -39,7 +39,7 @@ function Messenger({ auth: { user }, getProfiles, profile: { profiles, loading }
     sectionContainerEle.style.margin = 0;
     sectionContainerEle.style.padding = '5px';
 
-    socket.current = io("ws://developers-connector-socket-io.onrender.com");
+    socket.current = io("https://developers-connector-socket-io.onrender.com");
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
